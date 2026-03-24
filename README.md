@@ -4,7 +4,7 @@ A monorepo demonstrating **server-side Micro-Frontend composition** using Next.j
 
 ## Architecture
 
-Server-side composition: the **host** zone owns the entry point and uses Next.js `rewrites` to proxy requests to the correct downstream zone. Each zone is a fully independent Next.js App Router application with its own build, runtime, and port.
+Server-side composition: the **host** zone owns the entry point and uses Next.js `rewrites` to proxy requests to the correct zone (works like reverse proxy in nginx). Each zone is an independent Next.js App Router application.
 
 ```mermaid
 flowchart TD
@@ -36,14 +36,13 @@ Each zone is an independent Next.js App Router app with its own:
 
 - `package.json` and dependency tree
 - `next.config.ts` (`basePath` + `assetPrefix`)
-- MUI v6 dark theme + `ThemeRegistry`
 - Pages, components, and data layer
 
 ## Tech Stack
 
 - **Next.js 15** — App Router, SSR by default
 - **React 19** + **TypeScript**
-- **Material UI v6** — component library, dark Red Bull theme
+- **Material UI v6** — component library
 - **npm Workspaces** — monorepo package management
 - **concurrently** — run all zones in a single `npm run dev`
 
@@ -109,7 +108,7 @@ TeamRedBullMFE/
 │   │   │   ├── page.tsx        # Home page
 │   │   │   ├── theme.ts
 │   │   │   └── ThemeRegistry.tsx
-│   │   └── next.config.ts      # rewrites → riders/news zones
+│   │   └── next.config.ts      # rewrites → riders/news zones (works as a Shell)
 │   │
 │   ├── riders/                 # Zone: RIDERS — port 3001
 │   │   ├── app/
@@ -147,7 +146,7 @@ TeamRedBullMFE/
 2. Next.js `rewrites` in `apps/host/next.config.ts` match `/riders/*` and `/news/*` and proxy them to the respective zone's dev server (or production origin).
 3. Each sub-zone has `basePath` set so its internal routes align with those patterns — e.g. the riders zone's root page is `/riders`, not `/`.
 4. `assetPrefix` points the browser to each zone's own origin when fetching `_next/static` chunks, preventing 404s in development.
-5. Sub-zone `NavBar` components use plain `<a>` tags for cross-zone links. Using Next.js `<Link>` would prepend `basePath` to the href, sending e.g. `/riders/` instead of `/` when navigating home.
+5. Sub-zone `NavBar` components use plain `<a>` tags for cross-zone links. Using Next.js `<Link>` would prepend `basePath` to the href, sending e.g. `/riders/` instead of `/` when navigating home (soft routing within Next.js).
 6. Each zone ships its own full HTML shell (layout, ThemeRegistry, NavBar) — there is no shared shell or client-side stitching. Composition is **purely at the routing/proxy layer**.
 7. A small **zone badge** in each NavBar identifies which zone is serving the current page, making the architecture boundaries visible during development.
 
@@ -162,3 +161,7 @@ location /        { proxy_pass http://host-service;   }
 ```
 
 Remove `assetPrefix` from the sub-zone configs (or point it at their CDN origin) and the zones work identically to the dev setup.
+
+## Work in Progress:
+- dynamic routing in Riders are giving 404 for the first time
+- theme + navigation should be moved into a shared lib for better maintainability
