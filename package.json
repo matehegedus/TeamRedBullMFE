@@ -1,0 +1,16 @@
+{
+  "name": "team-redbull-mfe",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n host,riders,news -c cyan,red,green \"npm run dev --workspace=apps/host\" \"npm run dev --workspace=apps/riders\" \"npm run dev --workspace=apps/news\"",
+    "build": "npm run build --workspace=apps/riders && npm run build --workspace=apps/news && npm run build --workspace=apps/host",
+    "start": "concurrently -n host,riders,news -c cyan,red,green \"npm run start --workspace=apps/host\" \"npm run start --workspace=apps/riders\" \"npm run start --workspace=apps/news\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
