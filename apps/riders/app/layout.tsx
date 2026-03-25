@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ThemeRegistry from "./ThemeRegistry";
+import { NavBar, ThemeRegistry } from "@redbull/shared";
 
 export const metadata: Metadata = {
   title: "Riders — Team Red Bull Cycling",
@@ -14,7 +14,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <ThemeRegistry>
+          <NavBar active="Riders" />
+          {children}
+        </ThemeRegistry>
       </body>
     </html>
   );

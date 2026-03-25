@@ -1,27 +1,18 @@
-"use client";
-
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
 
-/**
- * Cross-zone navigation uses plain <a> tags.
- *
- * This zone has basePath="/news", so Next.js <Link href="/">
- * would resolve to /news — not the intended root.
- * Plain anchor tags bypass basePath and navigate to the correct zone.
- */
-const navItems = [
+type NavType = "Home" | "Riders" | "News";
+
+const navItems: { label: NavType; href: string }[] = [
   { label: "Home", href: "/" },
   { label: "Riders", href: "/riders" },
   { label: "News", href: "/news" },
 ];
 
-export default function NavBar({ active }: { active?: string }) {
+export default function NavBar({ active }: { active?: NavType }) {
   return (
     <AppBar
       position="fixed"
@@ -76,16 +67,6 @@ export default function NavBar({ active }: { active?: string }) {
               {item.label}
             </Button>
           ))}
-        </Box>
-
-        <Box sx={{ ml: "auto" }}>
-          <Chip
-            label="ZONE: NEWS"
-            size="small"
-            variant="outlined"
-            color="secondary"
-            sx={{ fontSize: "0.6rem", letterSpacing: "0.1em", opacity: 0.6 }}
-          />
         </Box>
       </Toolbar>
     </AppBar>

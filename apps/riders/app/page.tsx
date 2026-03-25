@@ -8,7 +8,7 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
-import NavBar from "./components/NavBar";
+import { NavBar } from "@redbull/shared";
 import { riders } from "./data/riders";
 
 export default function RidersPage() {
