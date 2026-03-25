@@ -9,9 +9,16 @@
   "scripts": {
     "dev": "concurrently -n shared,host,riders,news \"npm run dev --workspace=shared\" \"npm run dev --workspace=apps/host\" \"npm run dev --workspace=apps/riders\" \"npm run dev --workspace=apps/news\"",
     "build": "npm run build --workspace=shared && npm run build --workspace=apps/riders && npm run build --workspace=apps/news && npm run build --workspace=apps/host",
-    "start": "concurrently -n host,riders,news \"npm run start --workspace=apps/host\" \"npm run start --workspace=apps/riders\" \"npm run start --workspace=apps/news\""
+    "start": "concurrently -n host,riders,news \"npm run start --workspace=apps/host\" \"npm run start --workspace=apps/riders\" \"npm run start --workspace=apps/news\"",
+    "lint": "eslint ."
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "@next/eslint-plugin-next": "^15.0.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0"
   }
 }
