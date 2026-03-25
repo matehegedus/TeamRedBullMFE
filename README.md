@@ -83,13 +83,14 @@ Open **http://localhost:3000** in your browser — always use the **host port**.
 ## Other Scripts
 
 ```sh
-# Build all zones (riders + news first, then host)
+# Build all (shared first, then zones)
 npm run build
 
 # Start all zones in production mode (after build)
 npm run start
 
-# Build or start a single zone
+# Build or dev a single workspace
+npm run build --workspace=shared
 npm run dev --workspace=apps/host
 npm run dev --workspace=apps/riders
 npm run dev --workspace=apps/news
@@ -102,39 +103,38 @@ TeamRedBullMFE/
 ├── apps/
 │   ├── host/                   # Zone: HOME — port 3000
 │   │   ├── app/
-│   │   │   ├── components/
-│   │   │   │   └── NavBar.tsx  # Cross-zone nav (uses Next.js <Link>)
 │   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx        # Home page
-│   │   │   ├── theme.ts
-│   │   │   └── ThemeRegistry.tsx
+│   │   │   └── page.tsx        # Home page
 │   │   └── next.config.ts      # rewrites → riders/news zones (works as a Shell)
 │   │
 │   ├── riders/                 # Zone: RIDERS — port 3001
 │   │   ├── app/
 │   │   │   ├── [id]/
 │   │   │   │   └── page.tsx    # SSR rider profile
-│   │   │   ├── components/
-│   │   │   │   └── NavBar.tsx  # Cross-zone nav (uses plain <a> tags)
 │   │   │   ├── data/
 │   │   │   │   └── riders.ts   # Mock rider data
 │   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx        # Rider list
-│   │   │   ├── theme.ts
-│   │   │   └── ThemeRegistry.tsx
+│   │   │   └── page.tsx        # Rider list
 │   │   └── next.config.ts      # basePath: '/riders'
 │   │
 │   └── news/                   # Zone: NEWS — port 3002
 │       ├── app/
-│       │   ├── components/
-│       │   │   └── NavBar.tsx  # Cross-zone nav (uses plain <a> tags)
 │       │   ├── data/
 │       │   │   └── news.ts     # Mock article data
 │       │   ├── layout.tsx
-│       │   ├── page.tsx        # News listing
-│       │   ├── theme.ts
-│       │   └── ThemeRegistry.tsx
+│       │   └── page.tsx        # News listing
 │       └── next.config.ts      # basePath: '/news'
+│
+├── shared/                     # @redbull/shared — internal component library
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── NavBar.tsx      # Cross-zone navigation bar
+│   │   │   └── ThemeRegistry.tsx  # MUI ThemeProvider wrapper ("use client")
+│   │   ├── styles/
+│   │   │   └── theme.ts        # MUI theme (Red Bull palette)
+│   │   └── index.ts            # Public exports
+│   ├── tsconfig.json
+│   └── package.json            # name: @redbull/shared, main: src/index.ts
 │
 ├── package.json                # npm workspaces + concurrently dev script
 └── README.md
@@ -148,7 +148,9 @@ TeamRedBullMFE/
 4. `assetPrefix` points the browser to each zone's own origin when fetching `_next/static` chunks, preventing 404s in development.
 5. Sub-zone `NavBar` components use plain `<a>` tags for cross-zone links. Using Next.js `<Link>` would prepend `basePath` to the href, sending e.g. `/riders/` instead of `/` when navigating home (soft routing within Next.js).
 6. Each zone ships its own full HTML shell (layout, ThemeRegistry, NavBar) — there is no shared shell or client-side stitching. Composition is **purely at the routing/proxy layer**.
-7. A small **zone badge** in each NavBar identifies which zone is serving the current page, making the architecture boundaries visible during development.
+7. Shared UI lives in `shared/` and is consumed as the `@redbull/shared` package.
+
+- Each app uses `transpilePackages: ['@redbull/shared']` in its `next.config.ts` so Next.js compiles with `"use client"` (along with SSR, the server not just renders the HTML but also sends the JS along with it so the client can do hydration)
 
 ## Production Deployment
 
@@ -162,6 +164,6 @@ location /        { proxy_pass http://host-service;   }
 
 Remove `assetPrefix` from the sub-zone configs (or point it at their CDN origin) and the zones work identically to the dev setup.
 
-## Work in Progress:
-- dynamic routing in Riders are giving 404 for the first time
-- theme + navigation should be moved into a shared lib for better maintainability
+## Work in Progress
+
+- dynamic routing in Riders giving 404 on first load

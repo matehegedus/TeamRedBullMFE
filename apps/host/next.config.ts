@@ -10,6 +10,7 @@ import type { NextConfig } from "next";
  * would handle this routing instead.
  */
 const nextConfig: NextConfig = {
+  transpilePackages: ["@redbull/shared"],
   // no basepath + assetPrefix needed since it is the origin and owns the root /
   async rewrites() {
     return [
