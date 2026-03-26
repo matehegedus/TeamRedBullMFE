@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { articles } from "./data/news";
-import NormalArticle from "./components/normalArticle";
+import NormalArticle from "./components/NormalArticle";
 import FeaturedArticle from "./components/FeaturedArticle";
 
 export default function NewsPage() {
