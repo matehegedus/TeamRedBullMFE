@@ -102,11 +102,11 @@ export default async function RiderDetailPage({ params }: PageProps) {
             <Divider sx={{ borderColor: "divider", mb: 4 }} />
 
             <Typography variant="body2" color="text.secondary">
-              Age:{" "}
+              Age{": "}
               <Box component="span" color="text.primary">
                 {rider.age}
               </Box>
-              &nbsp;&nbsp;·&nbsp;&nbsp; Nationality:{" "}
+              &nbsp;&nbsp;·&nbsp;&nbsp; Nationality{": "}
               <Box component="span" color="text.primary">
                 {rider.nationality}
               </Box>
