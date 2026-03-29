@@ -15,20 +15,20 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/riders",
-        destination: "http://localhost:3001/riders",
+        source: "/:locale/riders",
+        destination: "http://localhost:3001/riders/:locale",
       },
       {
-        source: "/riders/:path*",
-        destination: "http://localhost:3001/riders/:path*",
+        source: "/:locale/riders/:path*",
+        destination: "http://localhost:3001/riders/:locale/:path*",
       },
       {
-        source: "/news",
-        destination: "http://localhost:3002/news",
+        source: "/:locale/news",
+        destination: "http://localhost:3002/news/:locale",
       },
       {
-        source: "/news/:path*",
-        destination: "http://localhost:3002/news/:path*",
+        source: "/:locale/news/:path*",
+        destination: "http://localhost:3002/news/:locale/:path*",
       },
     ];
   },

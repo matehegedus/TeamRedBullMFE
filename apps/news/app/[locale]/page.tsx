@@ -2,9 +2,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { articles } from "./data/news";
-import NormalArticle from "./components/NormalArticle";
-import FeaturedArticle from "./components/FeaturedArticle";
+import { articles } from "../data/news";
+import NormalArticle from "../components/NormalArticle";
+import FeaturedArticle from "../components/FeaturedArticle";
 
 export default function NewsPage() {
   const [featured, ...rest] = articles;

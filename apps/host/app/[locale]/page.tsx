@@ -6,25 +6,32 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActionArea from "@mui/material/CardActionArea";
 import Divider from "@mui/material/Divider";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-const zones = [
-  {
-    label: "Riders",
-    href: "/riders",
-    description:
-      "Meet the athletes. Six world-class riders competing at the highest level.",
-    zone: "ZONE: RIDERS  ·  port 3001",
-  },
-  {
-    label: "News",
-    href: "/news",
-    description:
-      "Race results, team announcements, and behind-the-scenes stories.",
-    zone: "ZONE: NEWS  ·  port 3002",
-  },
-];
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default function HomePage() {
+export default async function HomePage({ params }: PageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Home");
+
+  const zones = [
+    {
+      label: "Riders",
+      href: "/riders",
+      description: t("ridersDescription"),
+      zone: "ZONE: RIDERS  ·  port 3001",
+    },
+    {
+      label: "News",
+      href: "/news",
+      description: t("newsDescription"),
+      zone: "ZONE: NEWS  ·  port 3002",
+    },
+  ];
+
   return (
     <Box
       sx={{
@@ -57,7 +64,7 @@ export default function HomePage() {
             color="primary"
             sx={{ letterSpacing: "0.3em", fontSize: "0.7rem" }}
           >
-            Microfrontend Architecture Demo
+            {t("badge")}
           </Typography>
         </Box>
 
@@ -84,9 +91,7 @@ export default function HomePage() {
           color="text.secondary"
           sx={{ maxWidth: 480, mb: 6, fontSize: "1.1rem", lineHeight: 1.8 }}
         >
-          A Next.js Multi-Zone SSR architecture. Three independent Next.js apps
-          — each owning its own zone — composed into one seamless experience
-          through the host&apos;s rewrite rules.
+          {t("description")}
         </Typography>
 
         <Divider sx={{ mb: 6, borderColor: "divider", maxWidth: 480 }} />
@@ -152,26 +157,26 @@ export default function HomePage() {
               mb: 2,
             }}
           >
-            Architecture Overview
+            {t("archTitle")}
           </Typography>
           {[
             {
               zone: "HOST",
               port: "3000",
               path: "/",
-              note: "Serves / and rewrites sub-zones",
+              note: t("hostNote"),
             },
             {
               zone: "RIDERS",
               port: "3001",
               path: "/riders/*",
-              note: "Independent Next.js app",
+              note: t("zoneNote"),
             },
             {
               zone: "NEWS",
               port: "3002",
               path: "/news/*",
-              note: "Independent Next.js app",
+              note: t("zoneNote"),
             },
           ].map((row) => (
             <Box

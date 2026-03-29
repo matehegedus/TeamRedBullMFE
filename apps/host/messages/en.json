@@ -1,0 +1,11 @@
+{
+  "Home": {
+    "badge": "Microfrontend Architecture Demo",
+    "description": "A Next.js Multi-Zone SSR architecture. Three independent Next.js apps — each owning its own zone — composed into one seamless experience through the host's rewrite rules.",
+    "ridersDescription": "Meet the athletes. Six world-class riders competing at the highest level.",
+    "newsDescription": "Race results, team announcements, and behind-the-scenes stories.",
+    "archTitle": "Architecture Overview",
+    "hostNote": "Serves / and rewrites sub-zones",
+    "zoneNote": "Independent Next.js app"
+  }
+}
