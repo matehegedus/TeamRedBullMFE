@@ -8,10 +8,24 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
-import { riders } from "./data/riders";
-import QuickStat from "./components/QuickStat";
+import { riders } from "../data/riders";
+import QuickStat from "../components/QuickStat";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export default function RidersPage() {
+// next.js calls this at build time to resolve the dynamic [locale] folder and receives ["en", "de"]
+// by default next.js doesnt know what [locale] can be, it can be anything.
+export function generateStaticParams() {
+  return [{ locale: "en" }, { locale: "de" }];
+}
+
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function RidersPage({ params }: PageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Riders");
   return (
     <Box
       sx={{
@@ -33,15 +47,14 @@ export default function RidersPage() {
         </Box>
 
         <Typography variant="h2" sx={{ textTransform: "uppercase", mb: 1 }}>
-          Our Riders
+          {t("ourRiders")}
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
           sx={{ mb: 4, maxWidth: 480 }}
         >
-          Six athletes. One goal. Every race, every stage — pushing the limits
-          of professional cycling.
+          {t("ourRidersDesc")}
         </Typography>
 
         <Divider sx={{ mb: 6, borderColor: "divider" }} />

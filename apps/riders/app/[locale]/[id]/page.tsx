@@ -7,19 +7,24 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import { getRiderById, riders } from "../data/riders";
+import { getRiderById, riders } from "../../data/riders";
+import { setRequestLocale } from "next-intl/server";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }
 
-// Static generation for all known rider IDs
+// Static generation for all known locale + rider ID combinations
 export function generateStaticParams() {
-  return riders.map((r: { id: string }) => ({ id: r.id }));
+  const locales = ["en", "de"];
+  return locales.flatMap((locale) =>
+    riders.map((r: { id: string }) => ({ locale, id: r.id })),
+  );
 }
 
 export default async function RiderDetailPage({ params }: PageProps) {
-  const { id } = await params;
+  const { locale, id } = await params;
+  setRequestLocale(locale);
   const rider = getRiderById(id);
 
   if (!rider) notFound();
