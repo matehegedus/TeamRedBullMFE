@@ -5,9 +5,19 @@ import Divider from "@mui/material/Divider";
 import { articles } from "../data/news";
 import NormalArticle from "../components/NormalArticle";
 import FeaturedArticle from "../components/FeaturedArticle";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export default function NewsPage() {
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function NewsPage({ params }: PageProps) {
   const [featured, ...rest] = articles;
+
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("News");
 
   return (
     <Box
@@ -30,14 +40,14 @@ export default function NewsPage() {
         </Box>
 
         <Typography variant="h2" sx={{ textTransform: "uppercase", mb: 1 }}>
-          Latest News
+          {t("latestNews")}
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
           sx={{ mb: 4, maxWidth: 480 }}
         >
-          Race results, team announcements, and stories from Team Red Bull.
+          {t("description")}
         </Typography>
 
         <Divider sx={{ mb: 6, borderColor: "divider" }} />

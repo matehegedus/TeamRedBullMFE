@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
+// for SEO, previews etc..
 export const metadata: Metadata = {
   title: "Team Red Bull Cycling",
   description: "Official website of Team Red Bull — professional cycling team.",

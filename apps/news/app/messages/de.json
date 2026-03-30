@@ -1,1 +1,7 @@
-{ "home": { "title": "Team Red Bull" } }
+{
+  "News": {
+    "title": "Team Red Bull",
+    "latestNews": "Neueste Nachrichten",
+    "description": "Rennergebnisse, Teamankündigungen und Geschichten von Team Red Bull."
+  }
+}
