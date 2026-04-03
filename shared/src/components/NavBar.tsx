@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
+import { MenuItem, Select, Stack } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
@@ -93,30 +93,17 @@ export default function NavBar({ active }: { active?: NavType }) {
               </Button>
             ))}
           </Stack>
-          <select
+          <Select
+            size="small"
             value={currentLocale}
             onChange={(e) => handleLocaleChange(e.target.value)}
-            style={{
-              background: "transparent",
-              color: "#fff",
-              border: "1px solid rgba(255,255,255,0.3)",
-              borderRadius: 0,
-              padding: "6px 8px",
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              outline: "none",
-            }}
           >
             {languages.map((lang) => (
-              <option
-                key={lang.id}
-                value={lang.id}
-                style={{ background: "#161616" }}
-              >
+              <MenuItem key={lang.id} value={lang.id}>
                 {lang.label}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         </Stack>
       </Toolbar>
     </AppBar>
